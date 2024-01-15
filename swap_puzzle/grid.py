@@ -1,6 +1,7 @@
 """
 This is the grid module. It contains the Grid class and its associated methods.
 """
+import matplotlib.pyplot as plt
 
 import random
 
@@ -51,14 +52,21 @@ class Grid():
         """
         Returns a representation of the grid with number of rows and columns.
         """
-        return f"<grid.Grid: m={self.m}, n={self.n}>"
+        fig, ax = plt.subplots(1, 1)
+        column_labels
+        ax.axis("tight")
+        ax.axis("off")
+        ax.table(cellText=self.state, loc="center")
+
+        plt.show()
 
     def is_sorted(self):
         """
         Checks is the current state of the grid is sorte and returns the answer as a boolean.
         """
-        # TODO: implement this function (and remove the line "raise NotImplementedError").
-        raise NotImplementedError
+        bon_tab = Grid(self.m,self.n)
+
+        return bon_tab.state == self.state
 
     def swap(self, cell1, cell2):
         """
@@ -69,8 +77,23 @@ class Grid():
         cell1, cell2: tuple[int]
             The two cells to swap. They must be in the format (i, j) where i is the line and j the column number of the cell. 
         """
-        # TODO: implement this function (and remove the line "raise NotImplementedError").
-        raise NotImplementedError
+        (i_1,j_1) = cell1
+        (i_2,j_2) = cell2
+        if (i_1 < n and i_2 < n and j_1 < m and j_2 < m):
+            if (i_1 == i_2) and ( (j_1 == j_2 + 1) or (j_1 == j_2 - 1) ):
+                    temp = self.state[i_1][j_1]
+                    self.state[i_1][j_1] = self.state[i_2][j_2]
+                    self.state[i_2][j_2]=temp
+
+            elif (j_1 == j_2) and ( (i_1 == i_2 + 1) or (i_1 == i_2 - 1) ) :
+                    temp = self.state[i_1][j_1]
+                    self.state[i_1][j_1] = self.state[i_2][j_2]
+                    self.state[i_2][j_2]=temp
+
+            else:
+                raise ValueError
+        else:
+            raise ValueError
 
     def swap_seq(self, cell_pair_list):
         """
@@ -82,8 +105,14 @@ class Grid():
             List of swaps, each swap being a tuple of two cells (each cell being a tuple of integers). 
             So the format should be [((i1, j1), (i2, j2)), ((i1', j1'), (i2', j2')), ...].
         """
-        # TODO: implement this function (and remove the line "raise NotImplementedError").
-        raise NotImplementedError
+        #Fonction récursive
+        if cell_pair_list == []:
+            return 0
+        else:
+            (couple_1,couple_2) = cell_pair_list[0]
+            self.swap(couple_1,couple_2)
+            self.swap_seq(cell_pair_list[1:])
+
 
     @classmethod
     def grid_from_file(cls, file_name): 
